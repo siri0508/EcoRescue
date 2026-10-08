@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoRescue - Donate Food</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f4;
+            color: #183b2b;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 90px;
+            resize: vertical;
+        }
+
+        .upload-box {
+            border: 2px dashed #52a879;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f5fff9;
+            text-align: center;
+        }
+
+        .checkbox {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .checkbox input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #176b45;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0e5335;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .success {
+            background: #e7f8ed;
+            border-left: 5px solid #176b45;
+        }
+
+        .error {
+            background: #ffe8e8;
+            border-left: 5px solid #d33;
+        }
+
+        .ai-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f4f8ff;
+            border-radius: 10px;
+        }
+
+        .ai-box p {
+            margin: 8px 0;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #176b45;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌱 EcoRescue</h1>
+    <p>Rescue surplus food before it becomes waste.</p>
+</header>
+
+<div class="container">
+
+    <h2>🍱 Donate Surplus Food</h2>
+
+    <p>
+        Upload a photo of your surplus food. Amazon Nova Pro will analyze
+        the image and suggest a rescue action.
+    </p>
+
+
+    <form id="donationForm">
+
+        <label>Food Description</label>
+
+        <textarea
+            id="food"
+            name="food"
+            placeholder="Example: Rice, dal and vegetable curry"
+            required
+        ></textarea>
+
+
+        <label>📷 Food Photo</label>
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/jpeg,image/png,image/webp"
+                required
+            >
+
+            <p>
+                Upload a clear photo of the food.
+            </p>
+
+        </div>
+
+
+        <label>Quantity / Servings</label>
+
+        <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            min="1"
+            placeholder="Example: 10"
+            required
+        >
+
+
+        <label>Food Type</label>
+
+        <select
+            id="foodType"
+            name="foodType"
+            required
+        >
+
+            <option value="">Select food type</option>
+
+            <option value="Cooked meal">
+                Cooked meal
+            </option>
+
+            <option value="Bakery">
+                Bakery
+            </option>
+
+            <option value="Fruits">
+                Fruits
+            </option>
+
+            <option value="Vegetables">
+                Vegetables
+            </option>
+
+            <option value="Packaged food">
+                Packaged food
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+
+        <label>Prepared Time</label>
+
+        <input
+            type="datetime-local"
+            id="preparedTime"
+            name="preparedTime"
+            required
+        >
+
+
+        <label>Pickup Deadline</label>
+
+        <input
+            type="datetime-local"
+            id="pickupDeadline"
+            name="pickupDeadline"
+            required
+        >
+
+
+        <label>Pickup Location</label>
+
+        <input
+            type="text"
+            id="pickupLocation"
+            name="pickupLocation"
+            placeholder="Example: Hyderabad"
+            required
+        >
+
+
+        <div class="checkbox">
+
+            <input
+                type="checkbox"
+                id="safeConfirm"
+                required
+            >
+
+            <label for="safeConfirm">
+                I confirm that the food has been handled and stored
+                appropriately and is suitable for donation.
+            </label>
+
+        </div>
+
+
+        <button type="submit">
+            🤖 Analyze with Nova Pro & Post
+        </button>
+
+    </form>
+
+
+    <div id="result"></div>
+
+    <a class="back" href="index.html">
+        ← Back to EcoRescue
+    </a>
+
+</div>
+
+
+<script>
+
+const form =
+    document.getElementById("donationForm");
+
+const result =
+    document.getElementById("result");
+
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    result.style.display = "block";
+
+    result.className = "success";
+
+    result.innerHTML =
+        "<h3>🤖 Nova Pro is analyzing your food...</h3>" +
+        "<p>Please wait a moment.</p>";
+
+
+    try {
+
+        const formData =
+            new FormData(form);
+
+
+        const response =
+            await fetch("/api/donation", {
+
+                method: "POST",
+
+                body: formData
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Something went wrong."
+            );
+
+        }
+
+
+        const donation =
+            data.donation;
+
+        const ai =
+            donation.aiAnalysis;
+
+
+        result.innerHTML = `
+
+            <h3>✅ Food Rescued Successfully!</h3>
+
+            <div class="ai-box">
+
+                <h3>🤖 Nova Pro Analysis</h3>
+
+                <p>
+                    <strong>Food identified:</strong>
+                    ${escapeHtml(ai.foodIdentified)}
+                </p>
+
+                <p>
+                    <strong>Food category:</strong>
+                    ${escapeHtml(ai.foodCategory)}
+                </p>
+
+                <p>
+                    <strong>Rescue priority:</strong>
+                    ${escapeHtml(ai.rescuePriority)}
+                </p>
+
+                <p>
+                    <strong>Recommended action:</strong>
+                    ${escapeHtml(ai.recommendedAction)}
+                </p>
+
+                <p>
+                    <strong>Safety reminder:</strong>
+                    ${escapeHtml(ai.safetyReminder)}
+                </p>
+
+            </div>
+
+            <p>
+                Your surplus food is now available
+                for a receiver to accept.
+            </p>
+
+        `;
+
+        form.reset();
+
+
+    } catch (error) {
+
+        result.className = "error";
+
+        result.innerHTML = `
+
+            <h3>❌ Something went wrong</h3>
+
+            <p>
+                ${escapeHtml(error.message)}
+            </p>
+
+            <p>
+                Please make sure the EcoRescue server
+                is running and try again.
+            </p>
+
+        `;
+
+    }
+
+});
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+</body>
+</html>

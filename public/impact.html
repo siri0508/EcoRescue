@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EcoRescue - Impact Dashboard</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eefaf3,
+                    #f7fff9
+                );
+
+            color: #183b2b;
+
+        }
+
+
+        header {
+
+            background: #176b45;
+
+            color: white;
+
+            padding: 30px 20px;
+
+            text-align: center;
+
+        }
+
+
+        header h1 {
+
+            margin: 0 0 8px;
+
+            font-size: 32px;
+
+        }
+
+
+        header p {
+
+            margin: 0;
+
+            opacity: 0.9;
+
+        }
+
+
+        .container {
+
+            max-width: 1000px;
+
+            margin: 40px auto;
+
+            padding: 20px;
+
+        }
+
+
+        .hero {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .hero h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .hero p {
+
+            color: #587064;
+
+            font-size: 17px;
+
+        }
+
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(210px, 1fr)
+                );
+
+            gap: 20px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 30px 20px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.08);
+
+            transition:
+                transform 0.2s;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-5px);
+
+        }
+
+
+        .icon {
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .number {
+
+            font-size: 36px;
+
+            font-weight: bold;
+
+            color: #176b45;
+
+            margin: 10px 0;
+
+        }
+
+
+        .label {
+
+            color: #587064;
+
+            font-size: 15px;
+
+        }
+
+
+        .message {
+
+            background: white;
+
+            margin-top: 30px;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.08);
+
+        }
+
+
+        .message h2 {
+
+            color: #176b45;
+
+        }
+
+
+        .message p {
+
+            line-height: 1.7;
+
+            color: #52645a;
+
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            gap: 15px;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            margin-top: 30px;
+
+        }
+
+
+        .button {
+
+            display: inline-block;
+
+            padding: 13px 22px;
+
+            background: #176b45;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+        }
+
+
+        .button:hover {
+
+            background: #0e5335;
+
+        }
+
+
+        .secondary {
+
+            background: #e4f3ea;
+
+            color: #176b45;
+
+        }
+
+
+        .secondary:hover {
+
+            background: #d3eadc;
+
+        }
+
+
+        .note {
+
+            margin-top: 30px;
+
+            padding: 15px;
+
+            background: #fff8e5;
+
+            border-left: 4px solid #e0a500;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            color: #66552c;
+
+        }
+
+
+        .loading {
+
+            text-align: center;
+
+            padding: 50px;
+
+            color: #587064;
+
+        }
+
+
+        .error {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #b00020;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🌱 EcoRescue</h1>
+
+    <p>
+        Turning surplus food into rescued meals.
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="hero">
+
+        <h2>🌍 Our Impact</h2>
+
+        <p>
+            Every rescued serving is one less serving
+            that could become food waste.
+        </p>
+
+    </div>
+
+
+    <div
+        id="loading"
+        class="loading">
+
+        Loading impact data...
+
+    </div>
+
+
+    <div
+        id="dashboard"
+        style="display:none;">
+
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    🍱
+                </div>
+
+                <div
+                    id="totalDonations"
+                    class="number">
+
+                    0
+
+                </div>
+
+                <div class="label">
+
+                    Donations Posted
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    🤝
+                </div>
+
+                <div
+                    id="rescuedDonations"
+                    class="number">
+
+                    0
+
+                </div>
+
+                <div class="label">
+
+                    Donations Rescued
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    🍽️
+                </div>
+
+                <div
+                    id="servingsRescued"
+                    class="number">
+
+                    0
+
+                </div>
+
+                <div class="label">
+
+                    Servings Rescued
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="icon">
+                    ♻️
+                </div>
+
+                <div
+                    id="wastePrevented"
+                    class="number">
+
+                    0 kg
+
+                </div>
+
+                <div class="label">
+
+                    Estimated Food Waste Prevented
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="message">
+
+            <h2>
+                🌱 Small Actions. Real Impact.
+            </h2>
+
+            <p>
+
+                EcoRescue connects surplus food donors
+                with people or organizations that can
+                rescue and redistribute it.
+
+            </p>
+
+            <p>
+
+                Amazon Nova Pro helps analyze donated
+                food images and provide practical rescue
+                recommendations.
+
+            </p>
+
+
+            <div class="actions">
+
+                <a
+                    class="button"
+                    href="donor.html">
+
+                    🍱 Donate Food
+
+                </a>
+
+
+                <a
+                    class="button"
+                    href="receiver.html">
+
+                    🤝 Find Food
+
+                </a>
+
+
+                <a
+                    class="button secondary"
+                    href="index.html">
+
+                    🏠 Home
+
+                </a>
+
+            </div>
+
+
+            <div class="note">
+
+                <strong>Note:</strong>
+
+                Food-waste prevention is shown as an
+                illustrative estimate for this hackathon
+                prototype, not as a measured environmental
+                impact.
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div
+        id="error"
+        class="error"
+        style="display:none;">
+
+        Unable to load impact data.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+async function loadImpact() {
+
+    try {
+
+        const response =
+            await fetch("/api/impact");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to fetch impact"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "totalDonations"
+        ).textContent =
+            data.totalDonations;
+
+
+        document.getElementById(
+            "rescuedDonations"
+        ).textContent =
+            data.rescuedDonations;
+
+
+        document.getElementById(
+            "servingsRescued"
+        ).textContent =
+            data.servingsRescued;
+
+
+        document.getElementById(
+            "wastePrevented"
+        ).textContent =
+            data.estimatedWastePreventedKg +
+            " kg";
+
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "dashboard"
+        ).style.display =
+            "block";
+
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "error"
+        ).style.display =
+            "block";
+
+    }
+
+}
+
+
+// Load dashboard
+
+loadImpact();
+
+
+</script>
+
+
+</body>
+
+</html>

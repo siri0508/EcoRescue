@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EcoRescue - Rescue Surplus Food</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eefaf3,
+                    #f7fff9
+                );
+
+            color: #183b2b;
+
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            padding:
+                18px 7%;
+
+            background: white;
+
+            box-shadow:
+                0 2px 12px
+                rgba(0,0,0,0.06);
+
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            color: #176b45;
+
+        }
+
+
+        nav a {
+
+            color: #176b45;
+
+            text-decoration: none;
+
+            margin-left: 22px;
+
+            font-weight: bold;
+
+        }
+
+
+        nav a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            text-align: center;
+
+            padding:
+                80px 20px 70px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #dff5e8,
+                    #f6fff9
+                );
+
+        }
+
+
+        .hero .emoji {
+
+            font-size: 65px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(38px, 7vw, 65px);
+
+            margin:
+                10px 0;
+
+            color: #176b45;
+
+        }
+
+
+        .hero h1 span {
+
+            color: #0e5335;
+
+        }
+
+
+        .hero p {
+
+            max-width: 700px;
+
+            margin:
+                20px auto;
+
+            font-size: 19px;
+
+            line-height: 1.6;
+
+            color: #52645a;
+
+        }
+
+
+        .tagline {
+
+            font-weight: bold;
+
+            color: #176b45;
+
+        }
+
+
+        /* =========================
+           MAIN CARDS
+        ========================= */
+
+        .container {
+
+            max-width: 1100px;
+
+            margin:
+                0 auto;
+
+            padding:
+                50px 20px;
+
+        }
+
+
+        .section-title {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .section-title h2 {
+
+            font-size: 32px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .section-title p {
+
+            color: #64756c;
+
+        }
+
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 25px;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.08);
+
+            text-align: center;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+        }
+
+
+        .card:hover {
+
+            transform:
+                translateY(-6px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(0,0,0,0.12);
+
+        }
+
+
+        .card-icon {
+
+            font-size: 50px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .card h3 {
+
+            font-size: 23px;
+
+            color: #176b45;
+
+            margin:
+                10px 0;
+
+        }
+
+
+        .card p {
+
+            color: #617068;
+
+            line-height: 1.6;
+
+            min-height: 70px;
+
+        }
+
+
+        .button {
+
+            display: inline-block;
+
+            padding:
+                13px 22px;
+
+            background: #176b45;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+
+        }
+
+
+        .button:hover {
+
+            background: #0e5335;
+
+        }
+
+
+        .button.secondary {
+
+            background: #e4f3ea;
+
+            color: #176b45;
+
+        }
+
+
+        .button.secondary:hover {
+
+            background: #d2eadb;
+
+        }
+
+
+        /* =========================
+           HOW IT WORKS
+        ========================= */
+
+        .how {
+
+            background: white;
+
+            padding:
+                55px 20px;
+
+        }
+
+
+        .steps {
+
+            max-width: 1000px;
+
+            margin: 35px auto 0;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(200px, 1fr)
+                );
+
+            gap: 25px;
+
+        }
+
+
+        .step {
+
+            text-align: center;
+
+            padding: 20px;
+
+        }
+
+
+        .step-number {
+
+            width: 50px;
+
+            height: 50px;
+
+            margin:
+                0 auto 15px;
+
+            border-radius: 50%;
+
+            background: #176b45;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+            font-size: 20px;
+
+        }
+
+
+        .step h3 {
+
+            color: #176b45;
+
+        }
+
+
+        .step p {
+
+            color: #64756c;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =========================
+           AI SECTION
+        ========================= */
+
+        .ai-section {
+
+            max-width: 1000px;
+
+            margin:
+                50px auto;
+
+            padding:
+                35px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf4ff,
+                    #f7fbff
+                );
+
+            text-align: center;
+
+        }
+
+
+        .ai-section h2 {
+
+            color: #315b9a;
+
+        }
+
+
+        .ai-section p {
+
+            max-width: 750px;
+
+            margin:
+                10px auto;
+
+            line-height: 1.7;
+
+            color: #526477;
+
+        }
+
+
+        /* =========================
+           IMPACT
+        ========================= */
+
+        .impact {
+
+            background:
+                #176b45;
+
+            color: white;
+
+            text-align: center;
+
+            padding:
+                55px 20px;
+
+        }
+
+
+        .impact h2 {
+
+            font-size: 32px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .impact p {
+
+            max-width: 650px;
+
+            margin:
+                0 auto 25px;
+
+            line-height: 1.6;
+
+            opacity: 0.9;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            background: #0e5335;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px 15px;
+
+        }
+
+
+        footer p {
+
+            margin: 6px 0;
+
+            opacity: 0.85;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            nav {
+
+                flex-direction:
+                    column;
+
+                gap: 12px;
+
+            }
+
+
+            nav a {
+
+                margin-left: 10px;
+
+                margin-right: 10px;
+
+            }
+
+
+            .hero {
+
+                padding-top: 55px;
+
+            }
+
+
+            .hero p {
+
+                font-size: 17px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="logo">
+        🌱 EcoRescue
+    </div>
+
+
+    <div>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="donor.html">
+            Donate
+        </a>
+
+        <a href="receiver.html">
+            Receive
+        </a>
+
+        <a href="impact.html">
+            Impact
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="emoji">
+        🌱🍱
+    </div>
+
+
+    <h1>
+        Don't Waste Food.
+        <span>Rescue It.</span>
+    </h1>
+
+
+    <p class="tagline">
+        Turn surplus food into rescued meals.
+    </p>
+
+
+    <p>
+
+        EcoRescue uses AI to analyze surplus food
+        and connect donors with people or organizations
+        that can rescue it before it becomes waste.
+
+    </p>
+
+</section>
+
+
+
+<!-- =========================
+     MAIN OPTIONS
+========================= -->
+
+<div class="container">
+
+    <div class="section-title">
+
+        <h2>
+            How can you help?
+        </h2>
+
+        <p>
+            Choose how you want to participate
+            in the food-rescue network.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <!-- DONOR -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🍱
+            </div>
+
+            <h3>
+                I Have Surplus Food
+            </h3>
+
+            <p>
+
+                Have extra food from your home,
+                event, restaurant, hostel or gathering?
+
+                Upload a photo and let AI analyze it
+                before posting it for rescue.
+
+            </p>
+
+
+            <a
+                href="donor.html"
+                class="button">
+
+                Donate Food →
+
+            </a>
+
+        </div>
+
+
+
+        <!-- RECEIVER -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🤝
+            </div>
+
+            <h3>
+                I Can Receive Food
+            </h3>
+
+            <p>
+
+                Browse available surplus-food
+                donations and accept food that
+                can be rescued and redistributed.
+
+            </p>
+
+
+            <a
+                href="receiver.html"
+                class="button">
+
+                Find Food →
+
+            </a>
+
+        </div>
+
+
+
+        <!-- IMPACT -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌍
+            </div>
+
+            <h3>
+                View Our Impact
+            </h3>
+
+            <p>
+
+                See how many donations and servings
+                have been rescued through EcoRescue
+                and the estimated food waste prevented.
+
+            </p>
+
+
+            <a
+                href="impact.html"
+                class="button">
+
+                View Impact →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section class="how">
+
+    <div class="section-title">
+
+        <h2>
+            🔄 How EcoRescue Works
+        </h2>
+
+        <p>
+            A simple four-step food rescue workflow.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                📷 Upload
+            </h3>
+
+            <p>
+
+                A donor uploads a photo of
+                their surplus food.
+
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                🤖 Analyze
+            </h3>
+
+            <p>
+
+                Amazon Nova Pro analyzes the
+                food image and provides a
+                rescue recommendation.
+
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                🤝 Match
+            </h3>
+
+            <p>
+
+                The donation becomes available
+                for a receiver to accept.
+
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3>
+                🌱 Rescue
+            </h3>
+
+            <p>
+
+                A receiver accepts the donation
+                and the rescued food contributes
+                to the impact dashboard.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     AI SECTION
+========================= -->
+
+<div class="container">
+
+    <div class="ai-section">
+
+        <h2>
+            🤖 Powered by Amazon Nova Pro
+        </h2>
+
+
+        <p>
+
+            EcoRescue uses Amazon Bedrock and
+            Amazon Nova Pro's multimodal AI
+            capabilities to analyze food images,
+            identify the food category, assign a
+            rescue priority and recommend a
+            practical rescue action.
+
+        </p>
+
+
+        <p>
+
+            AI provides decision support;
+            donors and receivers remain responsible
+            for confirming appropriate food handling
+            and storage.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     IMPACT CTA
+========================= -->
+
+<section class="impact">
+
+    <h2>
+        🌍 Every Meal Rescued Matters
+    </h2>
+
+
+    <p>
+
+        Help turn surplus food into an opportunity
+        instead of letting it become waste.
+
+    </p>
+
+
+    <a
+        href="impact.html"
+        class="button secondary">
+
+        See EcoRescue Impact →
+
+    </a>
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        🌱 EcoRescue
+    </p>
+
+
+    <p>
+        AI-powered surplus food rescue network
+    </p>
+
+
+    <p>
+        Built for Environmental Hacks 2026
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

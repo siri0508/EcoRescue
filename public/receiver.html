@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EcoRescue - Receive Food</title>
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f1f8f4;
+
+            color: #183b2b;
+
+        }
+
+
+        header {
+
+            background: #176b45;
+
+            color: white;
+
+            padding: 25px;
+
+            text-align: center;
+
+        }
+
+
+        header h1 {
+
+            margin: 0;
+
+        }
+
+
+        .container {
+
+            max-width: 900px;
+
+            margin: 30px auto;
+
+            padding: 20px;
+
+        }
+
+
+        .intro {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+        }
+
+
+        .donations {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 20px;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.08);
+
+        }
+
+
+        .card h2 {
+
+            margin-top: 0;
+
+            color: #176b45;
+
+        }
+
+
+        .info {
+
+            margin: 8px 0;
+
+        }
+
+
+        .priority {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .high {
+
+            background: #ffe0e0;
+
+            color: #b00020;
+
+        }
+
+
+        .medium {
+
+            background: #fff1cc;
+
+            color: #8a5a00;
+
+        }
+
+
+        .low {
+
+            background: #dff5e7;
+
+            color: #176b45;
+
+        }
+
+
+        .ai-box {
+
+            background: #f3f7ff;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .ai-box h3 {
+
+            margin-top: 0;
+
+            color: #315b9a;
+
+        }
+
+
+        .ai-box p {
+
+            margin: 7px 0;
+
+            font-size: 14px;
+
+        }
+
+
+        button {
+
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #176b45;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        button:hover {
+
+            background: #0e5335;
+
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+        }
+
+
+        .accepted {
+
+            background: #e7f8ed;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-top: 15px;
+
+            color: #176b45;
+
+            font-weight: bold;
+
+        }
+
+
+        .back {
+
+            display: inline-block;
+
+            margin-top: 25px;
+
+            color: #176b45;
+
+            text-decoration: none;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🤝 EcoRescue</h1>
+
+    <p>Find surplus food and help rescue it from waste.</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="intro">
+
+        <h2>🍱 Available Food</h2>
+
+        <p>
+
+            These are surplus-food donations currently
+            available for rescue.
+
+        </p>
+
+    </div>
+
+
+    <div
+        id="donations"
+        class="donations">
+
+    </div>
+
+
+    <a
+        class="back"
+        href="index.html">
+
+        ← Back to EcoRescue
+
+    </a>
+
+
+</div>
+
+
+<script>
+
+
+const donationsContainer =
+    document.getElementById("donations");
+
+
+// -----------------------------
+// LOAD DONATIONS
+// -----------------------------
+
+async function loadDonations() {
+
+    try {
+
+        const response =
+            await fetch("/api/donations");
+
+
+        const donations =
+            await response.json();
+
+
+        if (
+            !donations ||
+            donations.length === 0
+        ) {
+
+            donationsContainer.innerHTML = `
+
+                <div class="empty">
+
+                    <h2>🌱 No food available right now</h2>
+
+                    <p>
+                        New surplus food donations will
+                        appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        donationsContainer.innerHTML =
+            donations.map(createCard).join("");
+
+
+    } catch (error) {
+
+        donationsContainer.innerHTML = `
+
+            <div class="empty">
+
+                <h2>❌ Unable to load donations</h2>
+
+                <p>
+                    Make sure the EcoRescue server is running.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// -----------------------------
+// CREATE DONATION CARD
+// -----------------------------
+
+function createCard(donation) {
+
+
+    const ai =
+        donation.aiAnalysis || {};
+
+
+    const priority =
+        ai.rescuePriority ||
+        donation.priority ||
+        "MEDIUM";
+
+
+    const priorityClass =
+        priority.toLowerCase();
+
+
+    return `
+
+        <div class="card">
+
+            <span class="priority ${priorityClass}">
+
+                🔥 ${escapeHtml(priority)}
+                RESCUE PRIORITY
+
+            </span>
+
+
+            <h2>
+                🍱 ${escapeHtml(
+                    ai.foodIdentified ||
+                    donation.food
+                )}
+            </h2>
+
+
+            <p class="info">
+
+                <strong>📦 Quantity:</strong>
+
+                ${escapeHtml(
+                    donation.quantity
+                )}
+                servings
+
+            </p>
+
+
+            <p class="info">
+
+                <strong>🍽️ Type:</strong>
+
+                ${escapeHtml(
+                    donation.foodType
+                )}
+
+            </p>
+
+
+            <p class="info">
+
+                <strong>⏰ Pickup deadline:</strong>
+
+                ${formatDate(
+                    donation.pickupDeadline
+                )}
+
+            </p>
+
+
+            <p class="info">
+
+                <strong>📍 Location:</strong>
+
+                ${escapeHtml(
+                    donation.pickupLocation
+                )}
+
+            </p>
+
+
+            <div class="ai-box">
+
+                <h3>🤖 Nova Pro Insight</h3>
+
+
+                <p>
+
+                    <strong>Food category:</strong>
+
+                    ${escapeHtml(
+                        ai.foodCategory ||
+                        donation.foodType
+                    )}
+
+                </p>
+
+
+                <p>
+
+                    <strong>Recommended action:</strong>
+
+                    ${escapeHtml(
+                        ai.recommendedAction ||
+                        "Arrange pickup as soon as possible."
+                    )}
+
+                </p>
+
+
+                <p>
+
+                    <strong>Safety reminder:</strong>
+
+                    ${escapeHtml(
+                        ai.safetyReminder ||
+                        "Confirm safe handling and storage before consumption."
+                    )}
+
+                </p>
+
+            </div>
+
+
+            <button
+                onclick="acceptDonation(${donation.id})">
+
+                🤝 Accept & Rescue This Food
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+// -----------------------------
+// ACCEPT DONATION
+// -----------------------------
+
+async function acceptDonation(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/donation/${id}/accept`,
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            alert(
+                data.error ||
+                "Unable to accept donation."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "🎉 Food rescue accepted successfully!"
+        );
+
+
+        loadDonations();
+
+
+    } catch (error) {
+
+        alert(
+            "Unable to connect to EcoRescue server."
+        );
+
+    }
+
+}
+
+
+// -----------------------------
+// FORMAT DATE
+// -----------------------------
+
+function formatDate(value) {
+
+    if (!value) return "Not specified";
+
+    const date =
+        new Date(value);
+
+
+    if (isNaN(date.getTime())) {
+
+        return value;
+
+    }
+
+
+    return date.toLocaleString();
+
+}
+
+
+// -----------------------------
+// SECURITY
+// -----------------------------
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// Load donations
+
+loadDonations();
+
+
+</script>
+
+
+</body>
+
+</html>
